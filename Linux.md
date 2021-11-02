@@ -115,8 +115,17 @@ k wait kafka/events --for=condition=Ready --timeout=300s
 ```bash
 k get kafka -o yaml
 
-k run kafka-producer -ti --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 --rm=true --restart=Never -- bin/kafka-console-producer.sh --broker-list events-kafka-bootstrap:9092 --topic my-topic
-k run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server events-kafka-bootstrap:9092 --topic my-topic --from-beginning
+k run kafka-producer -ti \
+                     --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 \
+                     --rm=true --restart=Never -- bin/kafka-console-producer.sh 
+                     --broker-list events-kafka-bootstrap:9092 
+                     --topic my-topic
+
+k run kafka-consumer -ti \
+                     --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 \
+                     --rm=true --restart=Never -- bin/kafka-console-consumer.sh 
+                     --bootstrap-server events-kafka-bootstrap:9092 
+                     --topic my-topic --from-beginning
 
 k delete pod kafka-consumer
 k delete pod kafka-producer
@@ -133,7 +142,7 @@ dapr status -k
 ```
 \
 &nbsp;
-9) Create a Kafka topic and Dapr connector
+9) Test Kafka with a Dapr connector
 
 ```bash
 cat << EOF | k create -f -
@@ -167,9 +176,23 @@ spec:
       value: 8192
 EOF
 
-k apply -f ~/KubDevBox/src/deploy/producer.yaml
+cat << EOF | k create -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: producer
+  annotations:
+    dapr.io/enabled: "true"
+    dapr.io/app-id: "producer"
+spec:
+  containers:
+    - name: node
+      image: tiagorcdocker/dapr-demo-producer
+      imagePullPolicy: Always
+EOF
 
-k run kafka-consumer -ti --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 \
+k run kafka-consumer -ti \
+                     --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 \
                      --rm=true --restart=Never -- bin/kafka-console-consumer.sh \
                      --bootstrap-server events-kafka-bootstrap:9092 \
                      --topic request-topic --from-beginning

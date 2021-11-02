@@ -1,27 +1,23 @@
-import json
-import time
 
+import os, time, json, uuid
 from dapr.clients import DaprClient
+from essential_generators import DocumentGenerator
 
-with DaprClient() as d:
+gen = DocumentGenerator()
+pubsub = os.getenv("PUBSUB", "request-pubsub")
+topic = os.getenv("TOPIC", "request-topic")
+interval = os.getenv("INTERVAL", 2)
+id = 0
 
-    id=0
-
+with DaprClient() as d: 
     while True:
-        id+=1
-        req_data = {
-            'id': id,
-            'message': 'hello world'
-        }
-
-        # Create a typed message with content type and body
+        id += 1
+        req_data = { 'id': str(uuid.UUID(int=id)), 'message': gen.sentence() }
         resp = d.publish_event(
-            pubsub_name='request-pubsub',
-            topic_name='request-topic',
-            data=json.dumps(req_data),
-            data_content_type='application/json',
+            pubsub_name = pubsub,
+            topic_name = topic,
+            data = json.dumps(req_data),
+            data_content_type = 'application/json',
         )
-
-        # Print the request
         print(req_data, flush=True)
-        time.sleep(2)
+        time.sleep(interval)

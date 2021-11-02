@@ -1,5 +1,3 @@
-requests
-fastapi
 dapr
 dapr-ext-grpc
-dapr-ext-fastapi
+essential_generators
