@@ -19,5 +19,5 @@ spec:
     spec:
       containers:
       - name: node
-        image: tiagordc/producer
+        image: tiagorcdocker/dapr-demo-producer
         imagePullPolicy: Always
