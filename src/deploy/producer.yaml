@@ -15,7 +15,7 @@ spec:
         app: producer
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/id: "producer"
+        dapr.io/app-id: "producer"
     spec:
       containers:
       - name: node
