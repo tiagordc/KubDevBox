@@ -187,8 +187,13 @@ metadata:
 spec:
   containers:
     - name: node
-      image: tiagorcdocker/dapr-demo-producer
+      image: tiagorcdocker/dapr-demo-producer-py
       imagePullPolicy: Always
+      env:
+      - name: TOPIC
+        value: "request-topic"
+      - name: PUBSUB
+        value: "request-pubsub"
 EOF
 
 k run kafka-consumer -ti \
