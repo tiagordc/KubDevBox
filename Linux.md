@@ -66,7 +66,7 @@ alias m='minikube'
 alias k='kubectl'
 alias l='ls -lrt'
 alias watch='watch '
-alias python=python3
+alias python='python3 '
 alias kc='k config view --minify | grep name'
 alias kdp='kubectl describe pod'
 alias krh='kubectl run --help | more'
@@ -107,10 +107,11 @@ m start --cpus=max --memory=max --driver=kvm2 -p dev
 6) Install Kafka (using strimzi):
 
 ```bash
-kubens default
-k create -f "https://strimzi.io/install/latest?namespace=default"
+k create namespace kafka
+kubens kafka
+k apply -f "https://strimzi.io/install/latest?namespace=kafka"
 k apply -f ~/KubDevBox/src/deploy/kafka.yaml
-k wait kafka/events --for=condition=Ready --timeout=300s
+k wait kafka/main --for=condition=Ready --timeout=300s
 ```
 \
 &nbsp;
@@ -122,13 +123,13 @@ k get kafka -o yaml
 k run kafka-producer -ti \
                      --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 \
                      --rm=true --restart=Never -- bin/kafka-console-producer.sh \
-                     --broker-list events-kafka-bootstrap:9092 \
+                     --broker-list main-kafka-bootstrap.kafka.svc.cluster.local:9092 \
                      --topic my-topic
 
 k run kafka-consumer -ti \
                      --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 \
                      --rm=true --restart=Never -- bin/kafka-console-consumer.sh \
-                     --bootstrap-server events-kafka-bootstrap:9092 \
+                     --bootstrap-server main-kafka-bootstrap.kafka.svc.cluster.local:9092 \
                      --topic my-topic --from-beginning
 
 k delete pod kafka-consumer
@@ -137,16 +138,24 @@ k delete kafkatopic my-topic
 ```
 \
 &nbsp;
-8) Initialize Dapr:
+8) Install Keda
 
 ```bash
+k apply -f https://github.com/kedacore/keda/releases/download/v2.4.0/keda-2.4.0.yaml
+```
+\
+&nbsp;
+9) Initialize Dapr:
+
+```bash
+kubens default
 dapr init -k --wait
 dapr status -k
 # dapr dashboard -k -p 9999
 ```
 \
 &nbsp;
-9) Test Kafka with a Dapr connector and VSCode debugging (optional)
+10) Test Kafka with a Dapr connector and VSCode debugging (optional)
 
 ```bash
 cat << EOF | k create -f -
@@ -155,7 +164,7 @@ kind: KafkaTopic
 metadata:
   name: request-topic
   labels:
-    strimzi.io/cluster: "events"
+    strimzi.io/cluster: "main"
 spec:
   partitions: 3
   replicas: 2
@@ -171,7 +180,7 @@ spec:
   version: v1
   metadata:
     - name: brokers
-      value: "events-kafka-bootstrap:9092"
+      value: "main-kafka-bootstrap.kafka.svc.cluster.local:9092"
     - name: authRequired
       value: "false"
     - name: initialOffset
@@ -218,7 +227,7 @@ k expose deployment producer --type ClusterIP --port 9876
 k run kafka-consumer -ti \
                      --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 \
                      --rm=true --restart=Never -- bin/kafka-console-consumer.sh \
-                     --bootstrap-server events-kafka-bootstrap:9092 \
+                     --bootstrap-server main-kafka-bootstrap.kafka.svc.cluster.local:9092 \
                      --topic request-topic --from-beginning
 
 # cleanup
