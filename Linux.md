@@ -117,14 +117,14 @@ k get kafka -o yaml
 
 k run kafka-producer -ti \
                      --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 \
-                     --rm=true --restart=Never -- bin/kafka-console-producer.sh 
-                     --broker-list events-kafka-bootstrap:9092 
+                     --rm=true --restart=Never -- bin/kafka-console-producer.sh \
+                     --broker-list events-kafka-bootstrap:9092 \
                      --topic my-topic
 
 k run kafka-consumer -ti \
                      --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 \
-                     --rm=true --restart=Never -- bin/kafka-console-consumer.sh 
-                     --bootstrap-server events-kafka-bootstrap:9092 
+                     --rm=true --restart=Never -- bin/kafka-console-consumer.sh \
+                     --bootstrap-server events-kafka-bootstrap:9092 \
                      --topic my-topic --from-beginning
 
 k delete pod kafka-consumer
@@ -221,6 +221,6 @@ k run kafka-consumer -ti \
 k delete pod kafka-consumer
 k delete service producer
 k delete deployment producer
-k delete Component request-pubsub
+k delete component request-pubsub
 k delete kafkatopic request-topic
 ```
