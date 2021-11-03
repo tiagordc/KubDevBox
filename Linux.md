@@ -1,10 +1,10 @@
 
 # Linux
 
-This guide is for Ubuntu running on **VMWare**
+Guide for Ubuntu Desktop
 \
 &nbsp;
-1) Download Ubuntu Desktop and install it on a virtual machine
+1) Download and install Ubuntu Desktop (tested on a virtual machine)
 \
 &nbsp;
 2) Install prerequisites:
@@ -13,8 +13,11 @@ This guide is for Ubuntu running on **VMWare**
 sudo apt update
 sudo apt upgrade
 
-sudo apt install open-vm-tools-desktop net-tools htop cpu-checker \
-                 docker.io libvirt-clients libvirt-daemon-system qemu-kvm
+# on VMWare:
+# sudo apt install open-vm-tools-desktop
+
+sudo apt install net-tools htop cpu-checker docker.io \
+                 libvirt-clients libvirt-daemon-system qemu-kvm
 
 sudo setfacl -m user:$USER:rw /var/run/docker.sock
 sudo usermod -aG libvirt $USER
@@ -142,7 +145,7 @@ dapr status -k
 ```
 \
 &nbsp;
-9) Test Kafka with a Dapr connector and VSCode debugging
+9) Test Kafka with a Dapr connector and VSCode debugging (optional)
 
 ```bash
 cat << EOF | k create -f -
