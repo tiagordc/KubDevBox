@@ -16,7 +16,7 @@ sudo apt upgrade
 # on VMWare:
 # sudo apt install open-vm-tools-desktop
 
-sudo apt install net-tools htop cpu-checker docker.io \
+sudo apt install net-tools htop cpu-checker python3-venv docker.io \
                  libvirt-clients libvirt-daemon-system qemu-kvm
 
 sudo setfacl -m user:$USER:rw /var/run/docker.sock
@@ -62,10 +62,11 @@ sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
 # Alias
 cat >> ~/.bash_aliases << EOT
 alias c='clear'
+alias m='minikube'
+alias k='kubectl'
 alias l='ls -lrt'
 alias watch='watch '
 alias python=python3
-alias k='kubectl'
 alias kc='k config view --minify | grep name'
 alias kdp='kubectl describe pod'
 alias krh='kubectl run --help | more'
@@ -96,10 +97,10 @@ source ~/.bashrc
 5) Start
 
 ```bash
-minikube profile list
-minikube start --cpus=max --memory=max --driver=kvm2 -p test
-# minikube tunnel -p test
-# minikube dashboard -p test
+m profile list
+m start --cpus=max --memory=max --driver=kvm2 -p dev
+# m tunnel -p dev
+# m dashboard -p dev
 ```
 \
 &nbsp;
