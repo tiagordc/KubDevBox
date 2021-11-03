@@ -4,8 +4,8 @@ from dapr.clients import DaprClient
 from essential_generators import DocumentGenerator
 
 gen = DocumentGenerator()
-pubsub = os.getenv("PUBSUB", "request-pubsub")
-topic = os.getenv("TOPIC", "request-topic")
+pubsub = os.getenv("PUBSUB", "pubsub")
+topic = os.getenv("TOPIC", "topic")
 interval = os.getenv("INTERVAL", 2)
 id = 0
 

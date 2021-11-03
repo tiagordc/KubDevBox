@@ -136,13 +136,13 @@ k delete kafkatopic my-topic
 8) Initialize Dapr:
 
 ```bash
-dapr init --kubernetes --wait
+dapr init -k --wait
 dapr status -k
 # dapr dashboard -k -p 9999
 ```
 \
 &nbsp;
-9) Test Kafka with a Dapr connector
+9) Test Kafka with a Dapr connector and VSCode debugging
 
 ```bash
 cat << EOF | k create -f -
@@ -177,24 +177,39 @@ spec:
 EOF
 
 cat << EOF | k create -f -
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: producer
-  annotations:
-    dapr.io/enabled: "true"
-    dapr.io/app-id: "producer"
+  labels:
+    app: producer
 spec:
-  containers:
-    - name: node
-      image: tiagorcdocker/dapr-demo-producer-py
-      imagePullPolicy: Always
-      env:
-      - name: TOPIC
-        value: "request-topic"
-      - name: PUBSUB
-        value: "request-pubsub"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer
+  template:
+    metadata:
+      labels:
+        app: producer
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "producer"
+    spec:
+      containers:
+      - name: node
+        image: tiagorcdocker/dapr-demo-producer-py
+        imagePullPolicy: Always
+        env:
+        - name: TOPIC
+          value: "request-topic"
+        - name: PUBSUB
+          value: "request-pubsub"
 EOF
+
+k expose deployment producer --type ClusterIP --port 9876
+
+# In VSCode using Bridge to Kubernetes you should now be able to debug the producer app
 
 k run kafka-consumer -ti \
                      --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 \
@@ -202,5 +217,10 @@ k run kafka-consumer -ti \
                      --bootstrap-server events-kafka-bootstrap:9092 \
                      --topic request-topic --from-beginning
 
+# cleanup
 k delete pod kafka-consumer
+k delete service producer
+k delete deployment producer
+k delete Component request-pubsub
+k delete kafkatopic request-topic
 ```
