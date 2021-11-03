@@ -94,7 +94,7 @@ source ~/.bashrc
 
 \
 &nbsp;
-5) Start
+5) Start cluster
 
 ```bash
 m profile list
