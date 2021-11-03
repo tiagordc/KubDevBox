@@ -10,7 +10,6 @@ This is a guide to setup a full Kubernetes cluster with some sample microservice
  * [Kafka](#kafka) cluster for event streaming with [ksqlDB](#ksqldb)
  * [Keda](#keda) autoscaler
  * [Dapr](#dapr) runtime
- * [Fission](#fission) for FaaS
  * [Prometheus](#prometheus) and [Grafana](#grafana)
 \
 &nbsp;
@@ -37,11 +36,6 @@ This is a guide to setup a full Kubernetes cluster with some sample microservice
  * [Strimzi quickstart](https://strimzi.io/quickstarts/)
  * [Strimzi Video Tutorial](https://www.youtube.com/watch?v=4bKSPrENDQQ)
  * [Strimzi with ksqlDB](https://ludusrusso.space/blog/2020/08/ksql-strimzi-k8s)
-
-## Fission
- * [Features](https://platform9.com/fission/)
- * [Setup](https://fission.io/docs/installation/#without-helm)
- * [Scaling Fission with KEDA](https://fission.io/blog/event-driven-scaling-fission-function-using-keda/)
 
 ## Dapr
  * [Docs](https://docs.dapr.io/)
