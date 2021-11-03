@@ -18,6 +18,7 @@ This is a guide to setup a full Kubernetes cluster with some sample microservice
 
  * [Linux](Linux.md)
  * [MacOS](Mac.md)
+ * [Debugger](Bridge.md)
 \
 &nbsp;
 \
