@@ -1,7 +1,7 @@
 
 # Kub Dev Box
 
-This is a guide to setup a full Kubernetes cluster with some sample microservices
+This is a guide to setup a full Kubernetes dev machine with some sample microservices
 \
 &nbsp;
 ## Stack

@@ -138,14 +138,21 @@ k delete kafkatopic my-topic
 ```
 \
 &nbsp;
-8) Install Keda
+8) Install ksqlDB
+
+```bash
+
+```
+\
+&nbsp;
+9) Install Keda
 
 ```bash
 k apply -f https://github.com/kedacore/keda/releases/download/v2.4.0/keda-2.4.0.yaml
 ```
 \
 &nbsp;
-9) Initialize Dapr:
+10) Initialize Dapr:
 
 ```bash
 kubens default
@@ -155,7 +162,7 @@ dapr status -k
 ```
 \
 &nbsp;
-10) Test Kafka with a Dapr connector and VSCode debugging (optional)
+11) Test Kafka with a Dapr connector and [VSCode debugging](Bridge.md) (optional)
 
 ```bash
 cat << EOF | k create -f -
