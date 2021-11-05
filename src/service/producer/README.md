@@ -1,7 +1,7 @@
 
 # Producer demo application
 
-This app is available as a container image on tiagorcdocker/dapr-demo-producer
+This app is available as a container image on tiagorcdocker/dapr-demo-producer-py
 
 ```bash
 python -m venv env

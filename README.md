@@ -42,3 +42,4 @@ This is a guide to setup a full Kubernetes dev machine with some sample microser
  * [Setup](https://github.com/dapr/quickstarts/tree/v1.4.0/hello-kubernetes)
  * [Intro](https://www.youtube.com/watch?v=MjyulcRqh20)
  * [Examples](https://github.com/gbaeke/dapr-demo)
+ * [Advanced Dapr](https://www.youtube.com/watch?v=QlzbQHGTS6c)

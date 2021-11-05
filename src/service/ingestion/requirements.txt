@@ -1,0 +1,6 @@
+fastapi
+pydantic
+uvicorn
+dapr
+dapr-ext-fastapi
+dapr-ext-grpc
