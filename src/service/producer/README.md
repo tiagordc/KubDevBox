@@ -10,6 +10,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 
 # docker login
-# docker build -t tiagorcdocker/dapr-demo-producer-py:latest ~/KubDevBox/src/service/producer
+# docker build -t tiagorcdocker/dapr-demo-producer-py:latest .
+# docker run tiagorcdocker/dapr-demo-producer-py
 # docker push tiagorcdocker/dapr-demo-producer-py
 ```

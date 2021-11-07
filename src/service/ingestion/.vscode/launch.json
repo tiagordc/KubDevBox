@@ -6,10 +6,33 @@
             "type": "python",
             "request": "launch",
             "module": "uvicorn",
-            "args": ["app:app","--reload", "--port", "8080", "--no-server-header"],
+            "args": [
+                "app:app",
+                "--reload",
+                "--port",
+                "8080",
+                "--no-server-header"
+            ],
             "env": {
                 "DEBUG": "TRUE"
             }
+        },
+        {
+            "name": "Application with Kubernetes",
+            "type": "python",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "app:app",
+                "--reload",
+                "--port",
+                "8080",
+                "--no-server-header"
+            ],
+            "env": {
+                "DEBUG": "TRUE"
+            },
+            "preLaunchTask": "bridge-to-kubernetes.resource"
         }
     ]
 }

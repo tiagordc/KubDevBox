@@ -99,7 +99,9 @@ source ~/.bashrc
 ```bash
 m profile list
 m start --cpus=max --memory=max --driver=kvm2 -p dev
-# m tunnel -p dev
+
+# On a different tab
+m tunnel -p dev
 # m dashboard -p dev
 ```
 \
@@ -162,7 +164,15 @@ dapr status -k
 ```
 \
 &nbsp;
-11) Test Kafka with a Dapr connector and [VSCode debugging](Bridge.md) (optional)
+11) Deploy ingestion service and [VSCode debugging](Bridge.md)
+
+```bash
+k create -f ~/KubDevBox/src/service/ingestion/k8s.yaml
+k get services
+```
+\
+&nbsp;
+12) Test Kafka with a Dapr connector (optional)
 
 ```bash
 cat << EOF | k create -f -
@@ -196,42 +206,7 @@ spec:
       value: 8192
 EOF
 
-cat << EOF | k create -f -
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: producer
-  labels:
-    app: producer
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: producer
-  template:
-    metadata:
-      labels:
-        app: producer
-      annotations:
-        dapr.io/enabled: "true"
-        dapr.io/app-id: "producer"
-    spec:
-      containers:
-      - name: node
-        image: tiagorcdocker/dapr-demo-producer-py
-        imagePullPolicy: Always
-        env:
-        - name: TOPIC
-          value: "request-topic"
-        - name: PUBSUB
-          value: "request-pubsub"
-EOF
-
-k expose deployment producer --type ClusterIP --port 9876
-
-# In VSCode using Bridge to Kubernetes you should now be able to debug the producer app
-
-k create -f ~/KubDevBox/src/service/ingestion/k8s.yaml
+k create -f ~/KubDevBox/src/service/producer/k8s.yaml
 
 k run kafka-consumer -ti \
                      --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 \

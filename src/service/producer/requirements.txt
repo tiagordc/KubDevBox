@@ -1,3 +1,2 @@
 dapr
-dapr-ext-grpc
 essential_generators
