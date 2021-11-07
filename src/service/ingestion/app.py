@@ -1,9 +1,10 @@
 import logging
 from fastapi import FastAPI
 
+logging.info('Starting ingestion API')
+
 app = FastAPI()
 
 @app.get("/")
 def read_root():
-    logging.info('Get root')
     return {"Hello": "World"}
