@@ -10,6 +10,6 @@ pip install --upgrade pip
 pip install -r requirements.txt
 
 # docker login
-# docker build -t tiagorcdocker/dapr-demo-ingestion-py:latest ~/KubDevBox/src/service/ingestion
+# docker build -t tiagorcdocker/dapr-demo-ingestion-py:latest .
 # docker push tiagorcdocker/dapr-demo-ingestion-py
 ```

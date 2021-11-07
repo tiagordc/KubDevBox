@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingestion
+  labels:
+    app: ingestion
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ingestion
+  template:
+    metadata:
+      labels:
+        app: ingestion
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "ingestion"
+    spec:
+      containers:
+      - name: node
+        image: tiagorcdocker/dapr-demo-ingestion-py
+        imagePullPolicy: Always

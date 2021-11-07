@@ -64,7 +64,7 @@ cat >> ~/.bash_aliases << EOT
 alias c='clear'
 alias m='minikube'
 alias k='kubectl'
-alias l='ls -lrt'
+alias l='ls -la'
 alias watch='watch '
 alias python='python3 '
 alias kc='k config view --minify | grep name'
@@ -230,6 +230,8 @@ EOF
 k expose deployment producer --type ClusterIP --port 9876
 
 # In VSCode using Bridge to Kubernetes you should now be able to debug the producer app
+
+k create -f ~/KubDevBox/src/service/ingestion/k8s.yaml
 
 k run kafka-consumer -ti \
                      --image=quay.io/strimzi/kafka:0.26.0-kafka-3.0.0 \
