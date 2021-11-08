@@ -11,6 +11,8 @@ This is a guide to setup a full Kubernetes dev machine with some sample microser
  * [Keda](#keda) autoscaler
  * [Dapr](#dapr) runtime
  * [Prometheus](#prometheus) and [Grafana](#grafana)
+ * [Keycloak](#eycloak) identity server
+ 
 \
 &nbsp;
 ## Steps
