@@ -1,7 +1,7 @@
 import logging
 from fastapi import FastAPI
 
-logging.info('Starting ingestion API')
+print('Starting ingestion API')
 
 app = FastAPI()
 

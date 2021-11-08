@@ -167,8 +167,9 @@ dapr status -k
 11) Deploy ingestion service and [VSCode debugging](Bridge.md)
 
 ```bash
-k create -f ~/KubDevBox/src/service/ingestion/k8s.yaml
+k apply -f ~/KubDevBox/src/service/ingestion/k8s.yaml
 k get services
+# k rollout restart deployment/ingestion
 ```
 \
 &nbsp;
