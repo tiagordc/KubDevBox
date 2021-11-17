@@ -1,17 +1,16 @@
 
 # Kub Dev Box
 
-This is a guide to setup a full Kubernetes dev machine with some sample microservices
+This is a guide to setup a Kubernetes dev playground with some sample services
 \
 &nbsp;
 ## Stack
 
  * [Kubernetes](#kubernetes) on [minikube](#minikube)
- * [Kafka](#kafka) cluster for event streaming with [ksqlDB](#ksqldb)
- * [Keda](#keda) autoscaler
- * [Dapr](#dapr) runtime
+ * [Keycloak](#keycloak) identity server
+ * [Dapr](#dapr) service runtime
+ * [Kafka](#kafka) or [TimescaleDB](#timescaledb) for data ingestion
  * [Prometheus](#prometheus) and [Grafana](#grafana)
- * [Keycloak](#eycloak) identity server
  
 \
 &nbsp;
@@ -32,13 +31,9 @@ This is a guide to setup a full Kubernetes dev machine with some sample microser
  * [Deep Dive Into Minikube](https://www.youtube.com/watch?v=GHczvbzuVvc)
  * [Ingress](https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/)
  
-## Keda
- * [Install](https://keda.sh/docs/2.4/deploy/#install-2)
-
-## Kafka
- * [Strimzi quickstart](https://strimzi.io/quickstarts/)
- * [Strimzi Video Tutorial](https://www.youtube.com/watch?v=4bKSPrENDQQ)
- * [Strimzi with ksqlDB](https://ludusrusso.space/blog/2020/08/ksql-strimzi-k8s)
+## Keycloak
+ * [Deployment](https://www.keycloak.org/getting-started/getting-started-operator-kubernetes)
+ * [Yaml Examples](https://github.com/keycloak/keycloak-operator/tree/main/deploy/examples)
 
 ## Dapr
  * [Docs](https://docs.dapr.io/)
@@ -46,3 +41,10 @@ This is a guide to setup a full Kubernetes dev machine with some sample microser
  * [Intro](https://www.youtube.com/watch?v=MjyulcRqh20)
  * [Examples](https://github.com/gbaeke/dapr-demo)
  * [Advanced Dapr](https://www.youtube.com/watch?v=QlzbQHGTS6c)
+
+## Kafka
+ * [Strimzi quickstart](https://strimzi.io/quickstarts/)
+ * [Strimzi Video Tutorial](https://www.youtube.com/watch?v=4bKSPrENDQQ)
+ * [Strimzi with ksqlDB](https://ludusrusso.space/blog/2020/08/ksql-strimzi-k8s)
+
+## TimescaleDB

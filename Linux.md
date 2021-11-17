@@ -122,24 +122,33 @@ curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releas
 
 ```bash
 k create -f ~/KubDevBox/src/deploy/keycloak-operator.yaml
-kubens keycloak
+k wait deployment keycloak-operator -n keycloak --for=condition=Available --timeout=300s
 k create -f ~/KubDevBox/src/deploy/keycloak.yaml
 
-until [ $(k get keycloak/keycloak -o jsonpath='{.status.ready}') = true ] && [ $(k get keycloakrealms/application -o jsonpath='{.status.ready}') = true ];
+until [ $(k get keycloak keycloak -n keycloak -o jsonpath='{.status.ready}') = true ] && [ $(k get keycloakrealms application -n keycloak -o jsonpath='{.status.ready}') = true ];
 do
   echo "Waiting..."
   sleep 10s
 done
 
 # add to hosts
-KEYCLOAK=$(k get keycloak/keycloak -o jsonpath='{.spec.externalAccess.host}')
+KEYCLOAK=$(k get keycloak keycloak -n keycloak -o jsonpath='{.spec.externalAccess.host}')
 echo "$CLUSTER_IP  $KEYCLOAK" | sudo tee -a /etc/hosts
 
-# get keycloak operator
-SECRET=$(k get keycloak keycloak --output="jsonpath={.status.credentialSecret}")
-k get secret $SECRET -o go-template='{{range $k,$v := .data}}{{printf "%s: " $k}}{{if not $v}}{{$v}}{{else}}{{$v | base64decode}}{{end}}{{"\n"}}{{end}}'
+# get keycloak operator secret
+SECRET=$(k get keycloak keycloak -n keycloak -o jsonpath='{.status.credentialSecret}')
+SECRET=$(k get secret $SECRET -n keycloak -o json | jq -r '.data.ADMIN_PASSWORD' | base64 --decode)
 
-echo "Keycloak available at http://$KEYCLOAK/auth"
+# confirm ingress address
+k get ing -n keycloak
+
+echo "Keycloak available at http://$KEYCLOAK/auth | admin | $SECRET"
+
+# scale keycloak
+k get keycloak keycloak -n keycloak -o json | jq '.spec.instances = 2' | k replace -f -
+
+# TODO: create admin user
+
 ```
 \
 &nbsp;

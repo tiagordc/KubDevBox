@@ -2,6 +2,7 @@ apiVersion: keycloak.org/v1alpha1
 kind: Keycloak
 metadata:
   name: keycloak
+  namespace: keycloak
   labels:
     app: keycloak
 spec:
@@ -14,6 +15,7 @@ apiVersion: keycloak.org/v1alpha1
 kind: KeycloakRealm
 metadata:
   name: application
+  namespace: keycloak
   labels:
     realm: application
 spec:
