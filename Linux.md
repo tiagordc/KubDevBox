@@ -67,6 +67,9 @@ alias k='kubectl'
 alias l='ls -la'
 alias watch='watch '
 alias python='python3 '
+alias ks='kubectl get namespaces'
+alias kga='k get pod --all-namespaces'
+alias kgaa='kubectl get all --show-labels'
 alias kc='k config view --minify | grep name'
 alias kdp='kubectl describe pod'
 alias krh='kubectl run --help | more'
@@ -78,9 +81,6 @@ alias kg='kubectl get pods --show-labels'
 alias kr='kubectl replace -f'
 alias kh='kubectl --help | more'
 alias krh='kubectl run --help | more'
-alias ks='kubectl get namespaces'
-alias kga='k get pod --all-namespaces'
-alias kgaa='kubectl get all --show-labels'
 EOT
 
 cat >> ~/.bashrc << EOT
@@ -98,15 +98,52 @@ source ~/.bashrc
 
 ```bash
 m profile list
-m start --cpus=max --memory=max --driver=kvm2 -p dev
+m start --cpus=max --memory=max --driver=kvm2
+m addons enable ingress
+
+CLUSTER_IP=$(m ip)
+export KUBE_EDITOR="nano"
 
 # On a different tab
-m tunnel -p dev
-# m dashboard -p dev
+# m tunnel
+# m dashboard
+# m logs -f
 ```
 \
 &nbsp;
-6) Install Kafka (using strimzi):
+6) Install Operator Lifecycle Manager
+
+```bash
+curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.19.1/install.sh | bash -s v0.19.1
+```
+\
+&nbsp;
+7) Install Keycloak:
+
+```bash
+k create -f ~/KubDevBox/src/deploy/keycloak-operator.yaml
+kubens keycloak
+k create -f ~/KubDevBox/src/deploy/keycloak.yaml
+
+until [ $(k get keycloak/keycloak -o jsonpath='{.status.ready}') = true ] && [ $(k get keycloakrealms/application -o jsonpath='{.status.ready}') = true ];
+do
+  echo "Waiting..."
+  sleep 10s
+done
+
+# add to hosts
+KEYCLOAK=$(k get keycloak/keycloak -o jsonpath='{.spec.externalAccess.host}')
+echo "$CLUSTER_IP  $KEYCLOAK" | sudo tee -a /etc/hosts
+
+# get keycloak operator
+SECRET=$(k get keycloak keycloak --output="jsonpath={.status.credentialSecret}")
+k get secret $SECRET -o go-template='{{range $k,$v := .data}}{{printf "%s: " $k}}{{if not $v}}{{$v}}{{else}}{{$v | base64decode}}{{end}}{{"\n"}}{{end}}'
+
+echo "Keycloak available at http://$KEYCLOAK/auth"
+```
+\
+&nbsp;
+8) Install Kafka (using strimzi):
 
 ```bash
 k create namespace kafka

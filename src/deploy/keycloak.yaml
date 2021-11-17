@@ -1,0 +1,26 @@
+apiVersion: keycloak.org/v1alpha1
+kind: Keycloak
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+spec:
+  instances: 1
+  externalAccess:
+    enabled: True
+    host: keycloak.local
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakRealm
+metadata:
+  name: application
+  labels:
+    realm: application
+spec:
+  realm:
+    realm: "application"
+    enabled: True
+    displayName: "My Application"
+  instanceSelector:
+    matchLabels:
+      app: keycloak

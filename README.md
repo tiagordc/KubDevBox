@@ -30,7 +30,8 @@ This is a guide to setup a full Kubernetes dev machine with some sample microser
 
 ## Minikube
  * [Deep Dive Into Minikube](https://www.youtube.com/watch?v=GHczvbzuVvc)
-
+ * [Ingress](https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/)
+ 
 ## Keda
  * [Install](https://keda.sh/docs/2.4/deploy/#install-2)
 
